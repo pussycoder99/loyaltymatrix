@@ -412,3 +412,106 @@ document.addEventListener("DOMContentLoaded", function(){
         return '';
     }
 });
+
+// ─────────────────────────────────────────────
+// Hook: ClientAreaFooterOutput (Cart Checkout Notification)
+// Inject a discount notification on the checkout/viewcart page
+// ─────────────────────────────────────────────
+\add_hook('ClientAreaFooterOutput', 2, function (array $vars) {
+    try {
+        $templateFile = $vars['templatefile'] ?? '';
+        
+        // Target orderform viewcart and checkout templates
+        if (!in_array(strtolower((string)$templateFile), ['viewcart', 'checkout'])) {
+            return '';
+        }
+
+        $moduleVars = loyaltymatrix_getModuleVars();
+        if (($moduleVars['enableModule'] ?? '') !== 'on') {
+            return '';
+        }
+
+        $clientId = (int) ($_SESSION['uid'] ?? 0);
+        if ($clientId <= 0) {
+            return ''; // Only show for logged in users
+        }
+
+        $assignment = Capsule::table('mod_loyaltymatrix_client_tiers as ct')
+            ->leftJoin('mod_loyaltymatrix_tiers as t', 'ct.tier_id', '=', 't.id')
+            ->where('ct.client_id', $clientId)
+            ->first(['t.name', 't.discount_percent', 'ct.tier_id']);
+
+        if (!$assignment || !$assignment->tier_id || $assignment->discount_percent <= 0) {
+            return '';
+        }
+
+        $discountPct = (float) $assignment->discount_percent;
+        $tierName = htmlspecialchars($assignment->name ?? 'Tier');
+
+        $js = '<script>
+document.addEventListener("DOMContentLoaded", function(){
+    if(document.getElementById("lm-cart-banner")) return;
+    
+    // Attempt to find the total sum from the page
+    var totalText = "";
+    var totalElement = document.querySelector("#totalDueToday") || document.querySelector(".total-due-today .amt");
+    if (!totalElement) {
+        // Fallback for older themes or different layouts
+        var summaryElems = document.querySelectorAll(".order-summary .amt, .summary-container .total");
+        if (summaryElems.length > 0) {
+            totalElement = summaryElems[summaryElems.length - 1];
+        }
+    }
+    
+    var discountAmountFormatted = "' . $discountPct . '%";
+    var discountValueStr = "";
+    var discountAmount = 0;
+    
+    if (totalElement) {
+        totalText = totalElement.innerText || totalElement.textContent;
+        // Basic regex to extract numbers
+        var match = totalText.match(/[\d,\.]+/);
+        if (match) {
+            var rawTotal = parseFloat(match[0].replace(/,/g, ""));
+            if (!isNaN(rawTotal) && rawTotal > 0) {
+                discountAmount = rawTotal * (' . $discountPct . ' / 100);
+                
+                // Keep the currency symbols by replacing the number
+                discountValueStr = totalText.replace(match[0], discountAmount.toFixed(2));
+                discountAmountFormatted = "<strong>" + discountValueStr + "</strong> (' . $discountPct . '%)";
+            }
+        }
+    }
+
+    var message = "<strong>🎉 Loyalty Reward!</strong> As a <strong>' . $tierName . '</strong> member, you will receive a <strong>" + discountAmountFormatted + " discount</strong> on this order!<br><small><em>The discounted price will be applied to the main invoice after you complete checkout. Please go ahead and place your order!</em></small>";
+
+    var html = \'<div class="alert alert-success mt-3 mb-3" style="border-left: 5px solid #28a745; display: flex; align-items: center; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">\'
+             + \'<div style="font-size: 2em; color: #28a745; margin-right: 15px;"><i class="fas fa-gift"></i></div>\'
+             + \'<div>\' + message + \'</div>\'
+             + \'</div>\';
+             
+    var wrapper = document.createElement("div");
+    wrapper.id = "lm-cart-banner";
+    wrapper.style.width = "100%";
+    wrapper.innerHTML = html;
+    
+    // Find common container for standard_cart
+    var container = document.querySelector("#order-standard_cart");
+    if (container) {
+        container.insertBefore(wrapper, container.firstChild);
+    } else {
+        container = document.querySelector("#PremiumComparison") || document.querySelector(".main-content");
+        if (container) {
+            container.parentNode.insertBefore(wrapper, container);
+        }
+    }
+    
+    // If the cart updates via ajax, we might want to re-run or let WHMCS handle it.
+});
+</script>';
+
+        return $js;
+    } catch (\Exception $e) {
+        return '';
+    }
+});
