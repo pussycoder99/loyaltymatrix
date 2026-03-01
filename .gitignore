@@ -1,0 +1,12 @@
+# IDE Files
+.vscode/
+.idea/
+
+# WHMCS Specifics
+updates.zip
+temp_extract/
+
+# PHP
+vendor/
+composer.lock
+EOF
