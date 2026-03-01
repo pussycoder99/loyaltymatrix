@@ -1,0 +1,223 @@
+/* =============================================
+   LoyaltyMatrix for WHMCS — Module Styles
+   ============================================= */
+
+/* --- Stat Cards --- */
+.lm-stat-card .panel-body {
+    padding: 20px 10px;
+}
+
+.lm-stat-card .panel-body i {
+    margin-bottom: 10px;
+}
+
+.lm-stat-card .panel-body h2 {
+    margin: 5px 0;
+    font-weight: 700;
+}
+
+.lm-stat-card .panel-body p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* --- Tier Badge (Admin) --- */
+.lm-tier-badge {
+    padding: 20px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.lm-tier-badge.lm-tier-active {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    color: #fff;
+}
+
+.lm-tier-badge.lm-tier-active i {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.lm-tier-badge.lm-tier-active h3 {
+    color: #fff;
+    margin: 10px 0 5px;
+    font-weight: 700;
+}
+
+.lm-tier-badge.lm-tier-none {
+    background: #f5f5f5;
+    border: 2px dashed #ddd;
+}
+
+.lm-tier-badge.lm-tier-none h3 {
+    margin: 10px 0 0;
+}
+
+/* --- Progress Section (Admin) --- */
+.lm-progress-section label {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.lm-progress-section .progress {
+    margin-bottom: 15px;
+    height: 22px;
+    border-radius: 11px;
+}
+
+.lm-progress-section .progress-bar {
+    line-height: 22px;
+    font-size: 11px;
+    border-radius: 11px;
+}
+
+/* --- Client Area — Tier Card --- */
+.lm-client-tier-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 30px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.lm-tier-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.lm-tier-icon.active {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: #fff;
+    font-size: 32px;
+}
+
+.lm-tier-icon.inactive {
+    background: #f0f0f0;
+    color: #999;
+    font-size: 32px;
+}
+
+.lm-tier-name {
+    font-weight: 700;
+    margin: 5px 0;
+}
+
+.lm-discount-badge {
+    display: inline-block;
+    background: #28a745;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* --- Client Area — Progress Items --- */
+.lm-progress-item {
+    margin-bottom: 15px;
+}
+
+.lm-progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lm-progress-label span:last-child {
+    color: #888;
+    font-weight: 400;
+}
+
+/* --- Client Area — Benefit Cards --- */
+.lm-tier-benefit-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 20px 15px;
+    margin-bottom: 20px;
+    position: relative;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.lm-tier-benefit-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.lm-tier-benefit-card.lm-current-tier {
+    border-color: #28a745;
+    border-width: 2px;
+    box-shadow: 0 2px 12px rgba(40, 167, 69, 0.15);
+}
+
+.lm-current-badge {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background: #28a745;
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.lm-tier-benefit-card i {
+    color: #fda085;
+    margin-bottom: 8px;
+}
+
+.lm-tier-benefit-card h4 {
+    font-weight: 700;
+    margin: 5px 0;
+}
+
+.lm-tier-discount {
+    font-size: 22px;
+    font-weight: 700;
+    color: #28a745;
+    margin: 5px 0;
+}
+
+.lm-tier-requirements {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+}
+
+.lm-tier-requirements li {
+    padding: 4px 0;
+    color: #555;
+}
+
+.lm-tier-requirements li i {
+    width: 18px;
+    text-align: center;
+    margin-right: 5px;
+    color: #888;
+    font-size: 12px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .lm-client-tier-card {
+        padding: 20px 15px;
+    }
+
+    .lm-tier-benefit-card {
+        margin-bottom: 15px;
+    }
+}
